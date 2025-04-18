@@ -1,0 +1,64 @@
+# -------------------------------------------
+# Análisis de Serie Temporal: Dataset "nottem"
+# Temperaturas mensuales en Nottingham (1920–1939)
+# -------------------------------------------
+
+# 1. Cargar librerías necesarias
+install.packages("tseries")  # Solo si no lo tienes instalado
+library(tseries)
+
+# 2. Cargar y explorar el dataset
+data("nottem")  # Dataset incluido en R
+
+# Ver clase y resumen del dataset
+print(class(nottem))       # Clase del objeto: "ts"
+print(summary(nottem))     # Estadísticas descriptivas
+
+# Graficar la serie temporal original
+plot(nottem, main = "Temperaturas Mensuales en Nottingham (1920–1939)",
+     xlab = "Año", ylab = "Temperatura (°F)", col = "blue")
+
+# 3. Descomposición de la serie temporal
+descomposicion <- decompose(nottem)
+
+# Graficar componentes: tendencia, estacionalidad y aleatoriedad
+plot(descomposicion)
+
+# 4. Análisis de Estacionariedad
+
+# ACF y PACF
+acf(nottem, main = "ACF - Serie Original")
+pacf(nottem, main = "PACF - Serie Original")
+
+# Prueba de Dickey-Fuller
+adf_result <- adf.test(nottem)
+print(adf_result)
+
+# 5. Transformación de la serie (si no es estacionaria)
+# Diferenciación
+nottem_diff <- diff(nottem)
+
+# Graficar serie diferenciada
+plot(nottem_diff, main = "Serie Temporal Diferenciada",
+     xlab = "Año", ylab = "Temperatura Diferenciada", col = "red")
+
+# ACF y PACF de la serie diferenciada
+acf(nottem_diff, main = "ACF - Serie Diferenciada")
+pacf(nottem_diff, main = "PACF - Serie Diferenciada")
+
+# Prueba Dickey-Fuller después de la diferenciación
+adf_diff_result <- adf.test(nottem_diff)
+print(adf_diff_result)
+
+# 6. Detección de valores atípicos
+
+# Gráfico de caja
+boxplot(nottem, main = "Gráfico de Caja - Temperaturas Mensuales",
+        ylab = "Temperatura (°F)", col = "green")
+
+# Revisión visual de posibles outliers
+plot(nottem, main = "Detección Visual de Outliers - Nottingham",
+     xlab = "Año", ylab = "Temperatura", col = "darkblue")
+
+# Fin del análisis
+# -------------------------------------------
